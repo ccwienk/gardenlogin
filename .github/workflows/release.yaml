@@ -32,3 +32,11 @@ jobs:
       next-version: ${{ inputs.next-version }}
       next-version-callback-action-path: ./.github/actions/prepare-release
       slack-channel-id: C01BKP30K1U # #sap-tech-gardenctl
+
+  publish-to-package-repositories:
+    needs:
+      - release-to-github-and-bump
+    secrets: inherit
+    uses: ./.github/workflows/publish-to-package-repositories.yaml
+    with:
+      component-descriptor: ${{ needs.release-to-github-and-bump.outputs.component-descriptor }}
