@@ -40,7 +40,7 @@ jobs:
     steps:
       # ───── GitHub‑App token (needed for repo‑dispatch) ──────────────────────
       - name: Get token for gardener-github-pkg-mngr app
-        if: ${{ inputs.dry_run == false }}
+        if: ${{ 'a' == 'b' }}
         id: gardener-github-workflows
         uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e   # v2.0.6
         with:
@@ -68,6 +68,8 @@ jobs:
 
           source .github/workflows/export-digests-from-component-descriptor.sh \
             /tmp/component-descriptor.yaml
+
+          env | sort
 
           echo "DARWIN_SHA_AMD64=${DARWIN_SHA_AMD64}" >> "${GITHUB_ENV}"
           echo "DARWIN_SHA_ARM64=${DARWIN_SHA_ARM64}" >> "${GITHUB_ENV}"
@@ -112,6 +114,8 @@ jobs:
                 darwin_sha_arm64:$darwin_sha_arm64,
                 linux_sha_amd64:$linux_sha_amd64,
                 linux_sha_arm64:$linux_sha_arm64}}')
+          echo "${data}"
+          exit 0
           curl -X POST \
             -H 'Accept: application/vnd.github.everest-preview+json' \
             -H "Authorization: Bearer ${{ steps.gardener-github-workflows.outputs.token }}" \
@@ -132,6 +136,8 @@ jobs:
                 component:$component,
                 tag:$tag,
                 windows_sha:$windows_sha}}')
+          echo "${data}"
+          exit 0
           curl -X POST \
             -H 'Accept: application/vnd.github.everest-preview+json' \
             -H "Authorization: Bearer ${{ steps.gardener-github-workflows.outputs.token }}" \
